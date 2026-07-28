@@ -1,17 +1,22 @@
-﻿namespace ECommerce
+﻿using ECommerce.Models;
+namespace ECommerce
 {
     public class Program
     {
         // Shared DbContext - created ONCE, here, so every function below reuses
+        static ProjectContext context = new ProjectContext();
         // the exact same instance instead of each function opening its own.
         //static AppDbContext context = new AppDbContext();
         // Shared login state - 0 means "nobody is logged in".
         // Set by Login(), read by any function that requires a logged-in user,
-        // reset back to 0 by Logout().
+        // reset back to 0 by Logout()
+
         static int loggedInUserId = 0;
 
+
         static void Main(string[] args)
-        {
+        { 
+
             bool exitApp = false;
             while (!exitApp)
             {
@@ -70,8 +75,60 @@
 
         static void RegisterUser()
         {
-            // TODO: implement (see Part 3 requirements)
-        }
+            
+            try
+            {
+                Console.WriteLine("\n--- Register New User ---");
+
+                Console.Write("Enter Name: ");
+                string name = Console.ReadLine();
+
+                Console.Write("Enter Email: ");
+                string email = Console.ReadLine();
+
+                Console.Write("Enter Password: ");
+                string password = Console.ReadLine();
+
+
+                User user = new User
+                {
+                    Name = name,
+                    Email = email,
+                    Password = password
+                };
+
+
+                context.users.Add(user);
+
+                int result = context.SaveChanges();
+
+
+                if (result > 0)
+                {
+                    Console.WriteLine("User registered successfully!");
+                }
+                else
+                {
+                    Console.WriteLine("User was not saved.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR:");
+                Console.WriteLine(ex.Message);
+
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine("DETAILS:");
+                    Console.WriteLine(ex.InnerException.Message);
+                }
+            }
+
+
+            Console.WriteLine("\nPress Enter to continue...");
+            Console.ReadLine();
+            }
         static void Login()
         {
             // TODO: implement - on success, set loggedInUserId = <found user's Id>
