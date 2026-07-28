@@ -1,4 +1,5 @@
 ﻿using ECommerce.Models;
+using Microsoft.EntityFrameworkCore;
 namespace ECommerce
 {
     public class Program
@@ -253,9 +254,54 @@ namespace ECommerce
 
             Console.WriteLine("Product added successfully!");
         }
+
+
+        /// /////////////////////////////////////////////////////////////
+
+        // Case 5: View All Products
         static void ViewAllProducts()
         {
-            // TODO: implement
+            Console.WriteLine("\n--- View All Products ---");
+
+
+            Console.Write("Filter by category? (y/n): ");
+            string answer = Console.ReadLine();
+
+
+            var products = context.products
+                .Include(p => p.Category)
+                .AsQueryable();
+
+
+            if (answer.ToLower() == "y")
+            {
+                Console.Write("Enter Category Name: ");
+                string categoryName = Console.ReadLine();
+
+
+                products = products.Where(
+                    p => p.Category.Name == categoryName
+                );
+            }
+
+
+            var productList = products.ToList();
+
+
+            if (productList.Count == 0)
+            {
+                Console.WriteLine("No products found.");
+                return;
+            }
+
+
+            foreach (var product in productList)
+            {
+                Console.WriteLine("-------------------------");
+                Console.WriteLine($"Name: {product.Name}");
+                Console.WriteLine($"Price: {product.Price}");
+                Console.WriteLine($"Category: {product.Category.Name}");
+            }
         }
         static void PlaceOrder()
         {
