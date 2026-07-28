@@ -303,27 +303,106 @@ namespace ECommerce
                 Console.WriteLine($"Category: {product.Category.Name}");
             }
         }
+
+
+        /// ///////////////////////////////////////////////////////////////
+
+        // Case 6: Place an Order
         static void PlaceOrder()
         {
-            // TODO: implement - check loggedInUserId != 0 first
+            if (loggedInUserId == 0)
+            {
+                Console.WriteLine("Please login first.");
+                return;
+            }
+
+            var products = context.products.ToList();
+
+            if (products.Count == 0)
+            {
+                Console.WriteLine("No products available.");
+                return;
+            }
+
+            Console.WriteLine("\nAvailable Products:");
+
+            foreach (var p in products)
+            {
+                Console.WriteLine($"{p.Id}. {p.Name} - {p.Price}");
+            }
+
+            Order order = new Order
+            {
+                UserId = loggedInUserId,
+                OrderDate = DateTime.Now
+            };
+
+            context.orders.Add(order);
+            context.SaveChanges();
+
+            string choice;
+
+            do
+            {
+                Console.Write("Enter Product ID: ");
+                int productId = int.Parse(Console.ReadLine());
+
+                Console.Write("Enter Quantity: ");
+                int quantity = int.Parse(Console.ReadLine());
+
+                OrderProduct orderProduct = new OrderProduct
+                {
+                    OrderId = order.Id,
+                    ProductId = productId,
+                    Quantity = quantity
+                };
+
+                context.Set<OrderProduct>().Add(orderProduct);
+
+                Console.Write("Add another product? (y/n): ");
+                choice = Console.ReadLine().ToLower();
+
+            } while (choice == "y");
+
+            context.SaveChanges();
+
+            Console.WriteLine("Order placed successfully!");
         }
+
+
+        /// /////////////////////////////////////////////////////
+        // Case 7: View My Orders
         static void ViewMyOrders()
         {
             // TODO: implement - check loggedInUserId != 0 first
         }
+
+        /// ///////////////////////////////////////////////////////////////
+        // Case 8: View Order Details
+
         static void ViewOrderDetails()
         {
             // TODO: implement
         }
+        
+        /// ///////////////////////////////////////////////////////////////
+        // Case 9: Add a Review for an Order
+
         static void AddReview()
         {
             // TODO: implement - check loggedInUserId != 0 first
         }
+
+        /// ///////////////////////////////////////////////////////////////
+        // Case 10: View All Reviews for a Product
+
         static void ViewReviewsForProduct()
         {
             // TODO: implement
         }
-        
+
+        /// ///////////////////////////////////////////////////////////////
+        // Case 11: Logout
         static void Logout()
         {
             // TODO: implement - reset loggedInUserId back to 0
