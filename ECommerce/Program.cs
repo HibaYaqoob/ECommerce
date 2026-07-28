@@ -187,9 +187,71 @@ namespace ECommerce
 
             Console.WriteLine("Category added successfully!");
         }
+
+        /// ////////////////////////////////////////////////////////////////
+
+        // Case 4: Add New Product
         static void AddProduct()
         {
-            // TODO: implement
+
+            Console.WriteLine("\n--- Add New Product ---");
+
+
+            Console.Write("Enter Product Name: ");
+            string name = Console.ReadLine();
+
+
+            Console.Write("Enter Product Price: ");
+            double price = double.Parse(Console.ReadLine());
+
+
+            // Show categories
+            var categories = context.categories.ToList();
+
+
+            if (categories.Count == 0)
+            {
+                Console.WriteLine("No categories available. Add a category first.");
+                return;
+            }
+
+
+            Console.WriteLine("\nAvailable Categories:");
+
+            foreach (var category in categories)
+            {
+                Console.WriteLine($"{category.Id}. {category.Name}");
+            }
+
+
+            Console.Write("Choose Category ID: ");
+            int categoryId = int.Parse(Console.ReadLine());
+
+
+            Category selectedCategory = context.categories
+                .FirstOrDefault(c => c.Id == categoryId);
+
+
+            if (selectedCategory == null)
+            {
+                Console.WriteLine("Category not found.");
+                return;
+            }
+
+
+            Product product = new Product
+            {
+                Name = name,
+                Price = price,
+                CategoryId = categoryId
+            };
+
+
+            context.products.Add(product);
+            context.SaveChanges();
+
+
+            Console.WriteLine("Product added successfully!");
         }
         static void ViewAllProducts()
         {
