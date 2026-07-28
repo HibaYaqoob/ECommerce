@@ -374,7 +374,28 @@ namespace ECommerce
         // Case 7: View My Orders
         static void ViewMyOrders()
         {
-            // TODO: implement - check loggedInUserId != 0 first
+            if (loggedInUserId == 0)
+            {
+                Console.WriteLine("Please login first.");
+                return;
+            }
+
+            var orders = context.orders
+                .Where(o => o.UserId == loggedInUserId)
+                .ToList();
+
+            if (orders.Count == 0)
+            {
+                Console.WriteLine("No orders found.");
+                return;
+            }
+
+            foreach (var order in orders)
+            {
+                Console.WriteLine("----------------------");
+                Console.WriteLine($"Order ID: {order.Id}");
+                Console.WriteLine($"Date: {order.OrderDate}");
+            }
         }
 
         /// ///////////////////////////////////////////////////////////////
