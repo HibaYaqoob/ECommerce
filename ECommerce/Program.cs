@@ -540,7 +540,17 @@ namespace ECommerce
         // Case 11: Logout
         static void Logout()
         {
-            // TODO: implement - reset loggedInUserId back to 0
+            static void Logout()
+            {
+                if (loggedInUserId == 0)
+                {
+                    Console.WriteLine("No user is currently logged in.");
+                    return;
+                }
+
+                loggedInUserId = 0;
+                Console.WriteLine("Logged out successfully.");
+            }
         }
     }
 }
