@@ -504,7 +504,36 @@ namespace ECommerce
 
         static void ViewReviewsForProduct()
         {
-            // TODO: implement
+            Console.Write("Enter Product ID: ");
+            int productId = int.Parse(Console.ReadLine());
+
+            var orderProducts = context.Set<OrderProduct>()
+                .Include(op => op.Order)
+                .ThenInclude(o => o.Review)
+                .Where(op => op.ProductId == productId)
+                .ToList();
+
+            if (orderProducts.Count == 0)
+            {
+                Console.WriteLine("No orders found for this product.");
+                return;
+            }
+
+            foreach (var item in orderProducts)
+            {
+                Console.WriteLine("----------------------");
+                Console.WriteLine($"Order ID: {item.OrderId}");
+
+                if (item.Order.Review != null)
+                {
+                    Console.WriteLine($"Rating: {item.Order.Review.Rating}");
+                    Console.WriteLine($"Comment: {item.Order.Review.Comment}");
+                }
+                else
+                {
+                    Console.WriteLine("No review.");
+                }
+            }
         }
 
         /// ///////////////////////////////////////////////////////////////
