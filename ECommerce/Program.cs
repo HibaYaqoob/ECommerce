@@ -163,9 +163,29 @@ namespace ECommerce
                 Console.WriteLine("Invalid email or password.");
             }
         }
+
+        /// //////////////////////////////////////////////////////////////
+        
+        // Case 3: Add New Category
         static void AddCategory()
         {
-            // TODO: implement
+            Console.WriteLine("\n--- Add New Category ---");
+
+            Console.Write("Enter Category Name: ");
+            string name = Console.ReadLine();
+
+
+            Category category = new Category
+            {
+                Name = name
+            };
+
+
+            context.categories.Add(category);
+            context.SaveChanges();
+
+
+            Console.WriteLine("Category added successfully!");
         }
         static void AddProduct()
         {
