@@ -403,7 +403,45 @@ namespace ECommerce
 
         static void ViewOrderDetails()
         {
-            // TODO: implement
+            Console.Write("Enter Order ID: ");
+            int orderId = int.Parse(Console.ReadLine());
+
+            var order = context.orders
+                .Include(o => o.OrderProducts)
+                .ThenInclude(op => op.Product)
+                .Include(o => o.Review)
+                .FirstOrDefault(o => o.Id == orderId);
+
+            if (order == null)
+            {
+                Console.WriteLine("Order not found.");
+                return;
+            }
+
+            double total = 0;
+
+            Console.WriteLine("\nProducts:");
+
+            foreach (var item in order.OrderProducts)
+            {
+                double subtotal = item.Product.Price * item.Quantity;
+
+                Console.WriteLine($"{item.Product.Name}  Qty:{item.Quantity}  Price:{item.Product.Price}");
+
+                total += subtotal;
+            }
+
+            Console.WriteLine($"Total = {total}");
+
+            if (order.Review != null)
+            {
+                Console.WriteLine($"Rating: {order.Review.Rating}");
+                Console.WriteLine($"Comment: {order.Review.Comment}");
+            }
+            else
+            {
+                Console.WriteLine("No review.");
+            }
         }
         
         /// ///////////////////////////////////////////////////////////////
