@@ -4,4 +4,5 @@
     <File Path="ERD &amp; Mapping/ERD of ECommerce.jpg" />
     <File Path="ERD &amp; Mapping/Mapping of ECommerce.jpg" />
   </Folder>
+  <Project Path="ECommerce/ECommerce.csproj" Id="bcb3c215-58d9-4322-8051-9bfe789bb410" />
 </Solution>
