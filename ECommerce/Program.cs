@@ -73,6 +73,9 @@ namespace ECommerce
         // shared "context" field declared above - never create a new
         // AppDbContext() inside any of these functions.
 
+
+        /// //////////////////////////////////////////////////////////////
+        // Case 1: Register New User
         static void RegisterUser()
         {
             
@@ -128,10 +131,37 @@ namespace ECommerce
 
             Console.WriteLine("\nPress Enter to continue...");
             Console.ReadLine();
-            }
+        }
+
+        //// //////////////////////////////////////////////////////////////
+
+        // Case 2: Login
+
         static void Login()
         {
-            // TODO: implement - on success, set loggedInUserId = <found user's Id>
+            Console.WriteLine("\n--- Login ---");
+
+            Console.Write("Enter Email: ");
+            string email = Console.ReadLine();
+
+            Console.Write("Enter Password: ");
+            string password = Console.ReadLine();
+
+
+            User user = context.users
+                .FirstOrDefault(u => u.Email == email && u.Password == password);
+
+
+            if (user != null)
+            {
+                loggedInUserId = user.Id;
+                Console.WriteLine($"Welcome {user.Name}!");
+                Console.WriteLine("Login successful.");
+            }
+            else
+            {
+                Console.WriteLine("Invalid email or password.");
+            }
         }
         static void AddCategory()
         {
